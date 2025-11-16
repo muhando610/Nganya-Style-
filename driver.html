@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nganya Style – Driver Portal</title>
+    <style>
+        body { margin: 0; font-family: Poppins, sans-serif; background: #f2f2f2; }
+        header { background: #000; color: #fff; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: auto; padding: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input, select { width: 100%; padding: 10px; margin: 8px 0 15px; border-radius: 6px; border: 1px solid #ccc; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; }
+        .primary { background: #0d6efd; color: white; }
+        .danger { background: crimson; color: white; }
+        .success { background: #28a745; color: white; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+<header>
+    <h2>Nganya Style – Driver Portal</h2>
+</header><div class="container"><!-- CREATE ACCOUNT -->
+<div id="createAccountSection" class="card">
+    <h3>Create Account</h3>
+    <input id="regName" placeholder="Full Name" />
+    <input id="regPhone" placeholder="Phone Number" />
+    <input id="regPass" placeholder="Password" type="password" />
+    <button class="btn primary" onclick="createAccount()">Create Account</button>
+</div>
+
+<!-- APPLICATION FORM -->
+<div id="applicationSection" class="card hidden">
+    <h3>Driver Application</h3>
+    <input id="vehicleNo" placeholder="Vehicle / Plate Number" />
+    <input id="route" placeholder="Route (e.g. CBD – Rongai)" />
+    <input id="capacity" type="number" placeholder="Vehicle Capacity" />
+    <button class="btn primary" onclick="submitApplication()">Submit Application</button>
+</div>
+
+<!-- WAITING APPROVAL -->
+<div id="pendingSection" class="card hidden">
+    <h3>Application Submitted</h3>
+    <p>Your application is under review by Admin.</p>
+</div>
+
+<!-- LOGIN -->
+<div id="loginSection" class="card hidden">
+    <h3>Driver Login</h3>
+    <input id="loginPhone" placeholder="Phone Number" />
+    <input id="loginPass" placeholder="Password" type="password" />
+    <button class="btn primary" onclick="loginDriver()">Login</button>
+</div>
+
+<!-- DRIVER DASHBOARD -->
+<div id="dashboard" class="card hidden">
+    <h3>Driver Dashboard</h3>
+    <p><b>Name:</b> <span id="dName"></span></p>
+    <p><b>Vehicle:</b> <span id="dVehicle"></span></p>
+    <p><b>Route:</b> <span id="dRoute"></span></p>
+    <p><b>Capacity:</b> <span id="dCapacity"></span></p>
+    <p><b>Current Passengers:</b> <span id="dPassengers">0</span></p>
+
+    <button class="btn success" onclick="goOnline()" id="onlineBtn">Go Online</button>
+    <button class="btn danger hidden" onclick="goOffline()" id="offlineBtn">Go Offline</button>
+
+    <h3>Trip Requests</h3>
+    <div id="requests"></div>
+</div>
+
+</div><script>
+    let driver = JSON.parse(localStorage.getItem('driver')) || null;
+    let application = JSON.parse(localStorage.getItem('application')) || null;
+    let approved = localStorage.getItem('approved') === 'yes';
+
+    function show(id) {
+        document.getElementById('createAccountSection').classList.add('hidden');
+        document.getElementById('applicationSection').classList.add('hidden');
+        document.getElementById('pendingSection').classList.add('hidden');
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('dashboard').classList.add('hidden');
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    function createAccount() {
+        let name = regName.value;
+        let phone = regPhone.value;
+        let pass = regPass.value;
+
+        if (!name || !phone || !pass) return alert("Fill all fields");
+
+        driver = { name, phone, pass };
+        localStorage.setItem('driver', JSON.stringify(driver));
+        show('applicationSection');
+    }
+
+    function submitApplication() {
+        application = {
+            vehicle: vehicleNo.value,
+            route: route.value,
+            capacity: capacity.value,
+            status: 'pending'
+        };
+        localStorage.setItem('application', JSON.stringify(application));
+        show('pendingSection');
+    }
+
+    // ADMIN APPROVES DRIVER (Simulation)
+    // You will later replace this with Admin.html
+    setInterval(() => {
+        if (application && application.status === 'pending') {
+            // auto approve after 5 seconds for prototype
+            application.status = 'approved';
+            localStorage.setItem('application', JSON.stringify(application));
+            localStorage.setItem('approved', 'yes');
+            document.getElementById('pendingSection').innerHTML = `
+                <h3>Approved!</h3>
+                <p>Your account has been approved. Please login now.</p>
+            `;
+            document.getElementById('loginSection').classList.remove('hidden');
+        }
+    }, 5000);
+
+    function loginDriver() {
+        if (!driver) return alert("Account not found");
+        if (loginPhone.value !== driver.phone || loginPass.value !== driver.pass)
+            return alert("Incorrect login details");
+
+        if (!approved) return alert("Your application is not approved yet");
+
+        loadDashboard();
+    }
+
+    function loadDashboard() {
+        dName.innerText = driver.name;
+        dVehicle.innerText = application.vehicle;
+        dRoute.innerText = application.route;
+        dCapacity.innerText = application.capacity;
+        show('dashboard');
+    }
+
+    function goOnline() {
+        onlineBtn.classList.add('hidden');
+        offlineBtn.classList.remove('hidden');
+        alert("You are now online and visible to clients");
+    }
+
+    function goOffline() {
+        offlineBtn.classList.add('hidden');
+        onlineBtn.classList.remove('hidden');
+        alert("You are now offline");
+    }
+</script></body>
+</html>
