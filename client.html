@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nganya Style – Book a Ride</title>
+    <style>
+        body { margin: 0; font-family: Poppins, sans-serif; background: #f2f2f2; }
+        header { background: #000; color: #fff; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: auto; padding: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 8px 0 15px; border-radius: 6px; border: 1px solid #ccc; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; }
+        .primary { background: #0d6efd; color: white; }
+        .driverCard { background: #eaf3ff; padding: 15px; border-radius: 8px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<header>
+    <h2>Nganya Style – Book a Ride</h2>
+</header><div class="container"><!-- BOOK FORM -->
+<div class="card">
+    <h3>Request a Ride</h3>
+    <input id="pickup" placeholder="Pickup Location" />
+    <input id="destination" placeholder="Destination" />
+    <button class="btn primary" onclick="findDrivers()">Find Nganyas</button>
+</div>
+
+<!-- AVAILABLE DRIVERS -->
+<div id="driversSection" class="card" style="display:none;">
+    <h3>Available Drivers</h3>
+    <div id="driversList"></div>
+</div>
+
+</div><script>
+    function findDrivers() {
+        let pickup = document.getElementById('pickup').value;
+        let destination = document.getElementById('destination').value;
+
+        if (!pickup || !destination) return alert("Enter pickup & destination");
+
+        let driver = JSON.parse(localStorage.getItem('driver'));
+        let app = JSON.parse(localStorage.getItem('application'));
+        let approved = localStorage.getItem('approved') === 'yes';
+
+        let online = document.getElementById('onlineStatus')?.value;
+
+        document.getElementById('driversSection').style.display = 'block';
+
+        let driversList = document.getElementById('driversList');
+        driversList.innerHTML = "";
+
+        if (approved) {
+            let card = document.createElement('div');
+            card.className = 'driverCard';
+            card.innerHTML = `
+                <p><b>${driver.name}</b></p>
+                <p>Vehicle: ${app.vehicle}</p>
+                <p>Route: ${app.route}</p>
+                <button class='btn primary' onclick="requestRide('${pickup}','${destination}')">Request Ride</button>
+            `;
+            driversList.appendChild(card);
+        } else {
+            driversList.innerHTML = '<p>No drivers available right now.</p>';
+        }
+    }
+
+    function requestRide(pickup, destination) {
+        let request = { pickup, destination, status: 'pending' };
+        localStorage.setItem('rideRequest', JSON.stringify(request));
+
+        alert("Ride request sent! Driver will accept it.");
+    }
+</script></body>
+</html>
