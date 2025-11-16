@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nganya Style – Admin Dashboard</title>
+    <style>
+        body { margin: 0; font-family: Poppins, sans-serif; background: #f2f2f2; }
+        header { background: #000; color: #fff; padding: 20px; text-align: center; }
+        .container { max-width: 900px; margin: auto; padding: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600; }
+        .approve { background: #28a745; color: #fff; }
+        .reject { background: crimson; color: #fff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+<header>
+    <h2>Nganya Style – Admin Dashboard</h2>
+</header><div class="container"><!-- PENDING APPLICATIONS -->
+<div class="card">
+    <h3>Pending Driver Applications</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vehicle</th>
+                <th>Route</th>
+                <th>Capacity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="pendingList"></tbody>
+    </table>
+</div>
+
+<!-- APPROVED DRIVERS -->
+<div class="card">
+    <h3>Approved Drivers</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vehicle</th>
+                <th>Route</th>
+                <th>Capacity</th>
+            </tr>
+        </thead>
+        <tbody id="approvedList"></tbody>
+    </table>
+</div>
+
+</div><script>
+    function loadApplications() {
+        let driver = JSON.parse(localStorage.getItem('driver'));
+        let app = JSON.parse(localStorage.getItem('application'));
+        let approved = localStorage.getItem('approved') === 'yes';
+
+        let pendingList = document.getElementById('pendingList');
+        let approvedList = document.getElementById('approvedList');
+
+        pendingList.innerHTML = "";
+        approvedList.innerHTML = "";
+
+        if (!driver || !app) return;
+
+        if (!approved && app.status === 'pending') {
+            pendingList.innerHTML = `
+                <tr>
+                    <td>${driver.name}</td>
+                    <td>${app.vehicle}</td>
+                    <td>${app.route}</td>
+                    <td>${app.capacity}</td>
+                    <td>
+                        <button class='btn approve' onclick='approve()'>Approve</button>
+                        <button class='btn reject' onclick='reject()'>Reject</button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        if (approved) {
+            approvedList.innerHTML = `
+                <tr>
+                    <td>${driver.name}</td>
+                    <td>${app.vehicle}</td>
+                    <td>${app.route}</td>
+                    <td>${app.capacity}</td>
+                </tr>
+            `;
+        }
+    }
+
+    function approve() {
+        let app = JSON.parse(localStorage.getItem('application'));
+        app.status = 'approved';
+        localStorage.setItem('application', JSON.stringify(app));
+        localStorage.setItem('approved', 'yes');
+        loadApplications();
+        alert("Driver Approved Successfully");
+    }
+
+    function reject() {
+        localStorage.removeItem('application');
+        localStorage.removeItem('approved');
+        alert("Application Rejected");
+        loadApplications();
+    }
+
+    loadApplications();
+</script></body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nganya Style - Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }header {
+  background: #0d6efd;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-top: 0;
+  color: #0d6efd;
+}
+
+.driver-card {
+  background: #eef4ff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border-left: 5px solid #0d6efd;
+}
+
+button {
+  background: #0d6efd;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #084dbf;
+}
+
+.approved {
+  border-left: 5px solid #28a745;
+  background: #ebffef;
+}
+
+  </style>
+</head>
+<body>
+  <header>Nganya Style - Admin Dashboard</header>  <div class="container">
+    <h2>Pending Driver Applications</h2>
+    <div id="pendingList"></div><h2>Approved Drivers</h2>
+<div id="approvedList"></div>
+
+  </div>  <script>
+    function loadDrivers() {
+      const drivers = JSON.parse(localStorage.getItem("drivers")) || [];
+
+      const pendingList = document.getElementById("pendingList");
+      const approvedList = document.getElementById("approvedList");
+
+      pendingList.innerHTML = "";
+      approvedList.innerHTML = "";
+
+      drivers.forEach((driver, index) => {
+        const card = document.createElement("div");
+        card.className = "driver-card";
+        card.innerHTML = `
+          <strong>Name:</strong> ${driver.name}<br>
+          <strong>Vehicle:</strong> ${driver.vehicle}<br>
+          <strong>Route:</strong> ${driver.route}<br>
+          <strong>Status:</strong> ${driver.approved ? "Approved" : "Pending"}<br><br>
+        `;
+
+        if (!driver.approved) {
+          const btn = document.createElement("button");
+          btn.textContent = "Approve";
+          btn.onclick = () => approveDriver(index);
+          card.appendChild(btn);
+          pendingList.appendChild(card);
+        } else {
+          card.classList.add("approved");
+          approvedList.appendChild(card);
+        }
+      });
+    }
+
+    function approveDriver(index) {
+      const drivers = JSON.parse(localStorage.getItem("drivers")) || [];
+      drivers[index].approved = true;
+      localStorage.setItem("drivers", JSON.stringify(drivers));
+      loadDrivers();
+    }
+
+    loadDrivers();
+  </script></body>
+</html>
