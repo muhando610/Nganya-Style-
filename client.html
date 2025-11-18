@@ -1,74 +1,93 @@
 <!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nganya Style – Book a Ride</title>
-    <style>
-        body { margin: 0; font-family: Poppins, sans-serif; background: #f2f2f2; }
-        header { background: #000; color: #fff; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: auto; padding: 20px; }
-        .card { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 10px; margin: 8px 0 15px; border-radius: 6px; border: 1px solid #ccc; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; }
-        .primary { background: #0d6efd; color: white; }
-        .driverCard { background: #eaf3ff; padding: 15px; border-radius: 8px; margin-top: 10px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Login</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+    body{background:#f4f9ff;color:#0f172a;}header{
+  background:linear-gradient(135deg,#0b71f4,#0a5fd1);
+  padding:28px 20px;
+  color:white;text-align:center;
+  border-bottom-left-radius:22px;
+  border-bottom-right-radius:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+header h1{font-size:26px;font-weight:800;}
+
+.container{max-width:480px;margin:40px auto;padding:0 18px;}
+
+.card{
+  background:white;padding:22px;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+label{font-size:14px;color:#475569;font-weight:600;}
+input{
+  width:100%;margin-top:6px;margin-bottom:16px;
+  padding:13px;border-radius:10px;
+  border:1px solid #cbd5e1;font-size:15px;
+}
+
+.btn{background:#0b71f4;color:white;
+  padding:14px;text-align:center;display:block;
+  border-radius:12px;text-decoration:none;
+  font-weight:700;margin-top:12px;}
+
+.link{text-align:center;margin-top:12px;font-size:14px;}
+.link a{color:#0b71f4;font-weight:600;text-decoration:none;}
+
+.error{background:#fee2e2;color:#b91c1c;
+  padding:10px;text-align:center;border-radius:10px;
+  margin-bottom:14px;display:none;}
+
+  </style>
 </head>
-<body>
-<header>
-    <h2>Nganya Style – Book a Ride</h2>
-</header><div class="container"><!-- BOOK FORM -->
-<div class="card">
-    <h3>Request a Ride</h3>
-    <input id="pickup" placeholder="Pickup Location" />
-    <input id="destination" placeholder="Destination" />
-    <button class="btn primary" onclick="findDrivers()">Find Nganyas</button>
-</div>
+<body><header>
+  <h1>Client Login</h1>
+</header><div class="container">
+  <div class="card">
+    <div id="error" class="error">Invalid email or password</div><label>Email</label>
+<input type="email" id="email" placeholder="Enter your email" />
 
-<!-- AVAILABLE DRIVERS -->
-<div id="driversSection" class="card" style="display:none;">
-    <h3>Available Drivers</h3>
-    <div id="driversList"></div>
-</div>
+<label>Password</label>
+<input type="password" id="password" placeholder="Enter your password" />
 
+<a class="btn" href="#" onclick="loginClient()">Login</a>
+
+<div class="link">Don't have an account? <a href="client_register.html">Register</a></div>
+<div class="link"><a href="client_forgot.html">Forgot Password?</a></div>
+
+  </div>
 </div><script>
-    function findDrivers() {
-        let pickup = document.getElementById('pickup').value;
-        let destination = document.getElementById('destination').value;
+async function loginClient(){
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
 
-        if (!pickup || !destination) return alert("Enter pickup & destination");
+  if(email === '' || password === ''){
+    showError('All fields are required'); return;
+  }
 
-        let driver = JSON.parse(localStorage.getItem('driver'));
-        let app = JSON.parse(localStorage.getItem('application'));
-        let approved = localStorage.getItem('approved') === 'yes';
+  try{
+    const res = await fetch('https://your-backend.com/api/client/login.php',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password})
+    });
 
-        let online = document.getElementById('onlineStatus')?.value;
+    const data = await res.json();
 
-        document.getElementById('driversSection').style.display = 'block';
-
-        let driversList = document.getElementById('driversList');
-        driversList.innerHTML = "";
-
-        if (approved) {
-            let card = document.createElement('div');
-            card.className = 'driverCard';
-            card.innerHTML = `
-                <p><b>${driver.name}</b></p>
-                <p>Vehicle: ${app.vehicle}</p>
-                <p>Route: ${app.route}</p>
-                <button class='btn primary' onclick="requestRide('${pickup}','${destination}')">Request Ride</button>
-            `;
-            driversList.appendChild(card);
-        } else {
-            driversList.innerHTML = '<p>No drivers available right now.</p>';
-        }
+    if(data.success){
+      window.location.href = 'find_nganya.html';
+    } else {
+      showError('Invalid login details');
     }
 
-    function requestRide(pickup, destination) {
-        let request = { pickup, destination, status: 'pending' };
-        localStorage.setItem('rideRequest', JSON.stringify(request));
+  }catch(err){ showError('Server error'); }
+}
 
-        alert("Ride request sent! Driver will accept it.");
-    }
+function showError(msg){
+  const e=document.getElementById('error'); e.textContent=msg; e.style.display='block';
+}
 </script></body>
 </html>
