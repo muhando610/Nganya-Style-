@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nganya Trip — Driver Dashboard</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+    body{background:#f4f9ff;color:#0f172a;}header{
+  background:linear-gradient(135deg,#0b71f4,#0a5fd1);
+  padding:26px 20px;
+  color:white;
+  text-align:center;
+  border-bottom-left-radius:22px;
+  border-bottom-right-radius:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+header h1{font-size:26px;font-weight:800;}
+
+.container{max-width:480px;margin:30px auto;padding:0 18px;}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
+.card h3{font-size:20px;font-weight:700;margin-bottom:10px;}
+.card p{font-size:14px;color:#475569;margin-bottom:14px;}
+
+.toggle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:10px;
+}
+.switch{
+  position:relative;
+  width:55px;
+  height:28px;
+}
+.switch input{opacity:0;width:0;height:0;}
+.slider{
+  position:absolute;cursor:pointer;inset:0;
+  background:#94a3b8;border-radius:30px;
+  transition:.3s;
+}
+.slider:before{
+  content:"";
+  position:absolute;
+  height:22px;width:22px;left:3px;bottom:3px;
+  background:white;border-radius:50%;transition:.3s;
+}
+input:checked + .slider{background:#22c55e;}
+input:checked + .slider:before{transform:translateX(26px);}    
+
+.btn{
+  background:#0b71f4;color:white;
+  padding:14px;text-align:center;
+  display:block;border-radius:12px;
+  text-decoration:none;font-weight:700;
+  margin-top:10px;
+}
+
+footer{text-align:center;color:#64748b;font-size:13px;margin:30px 0;}
+
+  </style>
+</head>
+<body><header>
+  <h1>Driver Dashboard</h1>
+</header><div class="container">  <!-- VEHICLE & ROUTE INFO -->  <p style="color:#475569;margin-bottom:18px;"><!-- Vehicle & Route (Fetched From Database) -->
+  <span id="vehicleRoute">Fetching your vehicle & route...</span></p>  <!-- ONLINE STATUS CARD -->  <div class="card" style="border-left:6px solid #f97316;">
+    <h3 style="display:flex;align-items:center;gap:8px;font-size:18px;">
+      <span>⚡</span> <span id="statusLabel">You're Offline</span>
+    </h3>
+    <p style="color:#64748b;margin-top:4px;">Toggle to start accepting</p><div class="toggle" style="margin-top:10px;">
+  <label class="switch">
+    <input type="checkbox" id="onlineToggle" onclick="toggleOnline()" />
+    <span class="slider"></span>
+  </label>
+</div>
+
+  </div>  <!-- AVAILABLE SEATS -->  <div class="card" style="background:#eef6ff; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <p style="color:#475569;font-size:14px;">Available Seats</p>
+      <h2 id="seatCount" style="font-size:28px;font-weight:800;margin-top:4px;">14/14</h2>
+    </div>
+    <span style="font-size:34px;color:#0ea5e9;">👥</span>
+  </div>  <!-- PENDING REQUESTS -->  <div class="card" style="background:#fff3e6; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <p style="color:#475569;font-size:14px;">Pending Requests</p>
+      <h2 id="pendingRequests" style="font-size:28px;font-weight:800;margin-top:4px;">0</h2>
+    </div>
+    <span style="font-size:34px;color:#f97316;">📈</span>
+  </div>  <!-- ACTIVE PASSENGERS -->  <div class="card" style="background:#ecfdf5; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <p style="color:#475569;font-size:14px;">Active Passengers</p>
+      <h2 id="activePassengers" style="font-size:28px;font-weight:800;margin-top:4px;">0</h2>
+    </div>
+    <span style="font-size:34px;color:#22c55e;">🧍‍♂️</span>
+  </div>  <!-- TODAY EARNINGS -->  <div class="card" style="background:#faf5ff; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <p style="color:#475569;font-size:14px;">Today's Earnings</p>
+      <h2 id="earnings" style="font-size:28px;font-weight:800;margin-top:4px;">KSh 0</h2>
+    </div>
+    <span style="font-size:34px;color:#a855f7;">💵</span>
+  </div>  <!-- ACTIONS -->  <div class="card">
+    <h3>Trip Controls</h3>
+    <a class="btn" href="booking.html">View Bookings</a>
+    <a class="btn" href="route.html">Extend Route</a>
+  </div></div>  </div>  <div class="card">
+    <h3>Profile</h3>
+    <p>Edit your vehicle, route, and personal details.</p>
+    <a class="btn" href="profile.html">Go to Profile</a>
+  </div></div><script>
+  document.addEventListener('DOMContentLoaded',()=>{
+  const yearEl = document.getElementById('year');
+  if(yearEl) yearEl.textContent = new Date().getFullYear();
+});
+
+  function toggleOnline(){
+    const label = document.getElementById("statusLabel");
+    const isOnline = document.getElementById("onlineToggle").checked;
+    label.textContent = isOnline ? "Online" : "Offline";
+  }
+</script><a class="btn" style="background:#dc2626; max-width:480px; margin:20px auto; display:block;" href="login.html">Logout</a>
+
+<footer>
+  © <span id="year"></span> Nganya Style
+</footer></body>
+</html>
