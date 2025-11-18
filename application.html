@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nganya Trip — Application Status</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Poppins,sans-serif; }
+    body { background:#f4f9ff; color:#0f172a; }header {
+  background:linear-gradient(135deg,#ff9d28,#ff7a00);
+  padding:28px 20px;
+  color:white;
+  text-align:center;
+  border-bottom-left-radius:22px;
+  border-bottom-right-radius:22px;
+  box-shadow:0 5px 18px rgba(0,0,0,0.12);
+}
+header h1 { font-size:26px; font-weight:800; }
+header p { opacity:0.9; margin-top:6px; }
+
+.container {
+  max-width:480px;
+  margin:32px auto;
+  background:white;
+  padding:24px;
+  border-radius:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+.status-box {
+  text-align:center;
+  padding:18px;
+  border-radius:16px;
+  margin-top:10px;
+}
+.pending { background:#fff7dd; border-left:6px solid #fbbf24; }
+.approved { background:#e7ffe9; border-left:6px solid #22c55e; }
+.rejected { background:#ffe5e5; border-left:6px solid #dc2626; }
+
+.status-box h3 { margin-bottom:6px; font-size:20px; }
+.status-box p { font-size:14px; color:#475569; }
+
+.btn {
+  background:#ff7a00;
+  color:white;
+  padding:14px;
+  width:100%;
+  display:block;
+  text-align:center;
+  margin-top:20px;
+  border-radius:14px;
+  font-weight:700;
+  text-decoration:none;
+  font-size:16px;
+}
+
+.info { font-size:14px; color:#475569; margin-top:14px; line-height:1.5; }
+
+  </style>
+</head>
+<body><header>
+  <h1>Application Status</h1>
+  <p>Your vehicle registration is under review</p>
+</header><div class="container">
+  <h2 style="text-align:center; font-weight:800; margin-bottom:10px;">Current Status</h2>  <!-- STATUS BOX (Dynamic UI) -->  <div id="statusBox" class="status-box pending">
+    <h3 id="statusTitle">Pending Approval</h3>
+    <p id="statusDesc">Your application has been received and is being reviewed by admin.</p>
+  </div>  <p class="info">
+    Once approved, you will be able to go online, accept passengers, and manage trips.
+    If rejected, you can reapply with corrected details.
+  </p><a href="dashboard.html" id="goToDashboard" class="btn" style="display:none;">Go to Dashboard</a>
+
+</div><script>
+  // Simulated application status (Replace with backend API response)
+  // Options: 'pending', 'approved', 'rejected'
+  const applicationStatus = 'pending'; // default
+
+  const statusBox = document.getElementById('statusBox');
+  const statusTitle = document.getElementById('statusTitle');
+  const statusDesc = document.getElementById('statusDesc');
+  const dashboardBtn = document.getElementById('goToDashboard');
+
+  function updateStatus() {
+    if (applicationStatus === 'approved') {
+      statusBox.className = 'status-box approved';
+      statusTitle.innerText = 'Approved';
+      statusDesc.innerText = 'Congratulations! Your vehicle is approved. You can now start accepting passengers.';
+      dashboardBtn.style.display = 'block';
+    }
+    else if (applicationStatus === 'rejected') {
+      statusBox.className = 'status-box rejected';
+      statusTitle.innerText = 'Application Rejected';
+      statusDesc.innerText = 'Your application was not approved. Please review your details and apply again.';
+      dashboardBtn.style.display = 'none';
+    }
+    else {
+      statusBox.className = 'status-box pending';
+      statusTitle.innerText = 'Pending Approval';
+      statusDesc.innerText = 'Your application is still under review. Please check back later.';
+      dashboardBtn.style.display = 'none';
+    }
+  }
+
+  updateStatus();
+</script></body>
+</html>
