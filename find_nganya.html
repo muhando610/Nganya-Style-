@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Nganya – Live Map</title>
+  <style>
+    body { margin: 0; font-family: Poppins, sans-serif; background: #f2f2f2; }
+    header { background: #000; color: #fff; padding: 20px; text-align: center; }
+    .container { max-width: 500px; margin: auto; padding: 20px; }
+    .card { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 10px; margin: 8px 0 15px; border-radius: 6px; border: 1px solid #ccc; }
+    .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; }
+    .primary { background: #0d6efd; color: white; }
+    .driverCard { background: #eaf3ff; padding: 15px; border-radius: 8px; margin-top: 10px; }
+    #map { width: 100%; height: 320px; border-radius: 12px; margin-bottom: 20px; }
+  </style>
+</head>
+<body><header>
+  <h2>Find a Nganya – Live Map</h2>
+</header><div class="container">  <div id="map"></div>  <!-- SEARCH FORM -->  <div class="card">
+    <h3>Search for Nganyas</h3>
+    <input id="pickup" placeholder="Pickup Location" />
+    <input id="destination" placeholder="Destination" />
+    <button class="btn primary" onclick="loadNganyas()">Find Nearby Nganyas</button>
+  </div>  <!-- AVAILABLE DRIVERS -->  <div id="driversSection" class="card" style="display:none;">
+    <h3>Available Nganyas</h3>
+    <div id="driversList"></div>
+  </div><a class="btn" style="background:#dc2626;margin-top:15px;" href="client.html">Logout</a>
+
+</div><script>
+let map;
+let markers = [];
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: -1.286389, lng: 36.817223 }, // Nairobi default
+    zoom: 13,
+  });
+}
+
+// Load Nganyas from backend
+async function loadNganyas(){
+  let pickup = document.getElementById('pickup').value;
+  let destination = document.getElementById('destination').value;
+
+  if (!pickup || !destination) return alert("Enter both pickup & destination");
+
+  try{
+    const res = await fetch('https://your-backend.com/api/client/getNganyas.php');
+    const data = await res.json();
+
+    document.getElementById('driversSection').style.display = 'block';
+
+    const driversList = document.getElementById('driversList');
+    driversList.innerHTML = "";
+
+    // Remove old markers
+    markers.forEach(m => m.setMap(null));
+    markers = [];
+
+    data.forEach(n => {
+      // Place marker on map
+      const marker = new google.maps.Marker({
+        position: { lat: parseFloat(n.lat), lng: parseFloat(n.lng) },
+        map: map,
+        title: n.vehicle_name
+      });
+      markers.push(marker);
+
+      // Driver Card
+      const card = document.createElement('div');
+      card.className = 'driverCard';
+      card.innerHTML = `
+        <p><b>${n.vehicle_name} (${n.plate})</b></p>
+        <p>Route: ${n.route}</p>
+        <p>Driver: ${n.driver}</p>
+        <p><b>Seats Available: ${n.seats}</b></p>
+        <button class='btn primary' onclick="requestRide('${n.id}', '${pickup}', '${destination}')">Request Seat</button>
+      `;
+      driversList.appendChild(card);
+    });
+
+  }catch(err){
+    alert("Failed to load nganyas");
+  }
+}
+
+// Request Ride
+async function requestRide(nganya_id, pickup, destination){
+  try{
+    const res = await fetch('https://your-backend.com/api/client/requestRide.php',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nganya_id,pickup,destination})
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+      alert("Ride request sent! Wait for driver confirmation.");
+    } else {
+      alert("Request failed");
+    }
+  }catch(err){ alert("Server error"); }
+}
+</script><script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script></body>
+</html>
