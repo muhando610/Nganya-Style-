@@ -1,73 +1,200 @@
 <!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nganya Style – Modern Matatu Ride Platform</title>
-    <style>
-        body { margin: 0; font-family: 'Poppins', sans-serif; background: #f8f8f8; }
-        header { background: #000; color: #fff; padding: 20px; text-align: center; }
-        .hero {
-            background: url('https://images.pexels.com/photos/4171204/pexels-photo-4171204.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover;
-            height: 70vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-        }
-        .hero h1 { font-size: 48px; margin: 0; }
-        .hero p { font-size: 20px; max-width: 600px; }
-        .cta-buttons { margin-top: 20px; display: flex; gap: 15px; }
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .primary { background: #ffcc00; color: #000; }
-        .secondary { background: #fff; color: #000; }
-        .section { padding: 40px; max-width: 1000px; margin: auto; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        footer { text-align: center; padding: 20px; background: #000; color: #fff; margin-top: 40px; }
-        a { text-decoration: none; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nganya Style</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Poppins, sans-serif; }
+    body { background: #f4f9ff; color: #0f172a; }/* HEADER */
+header { padding: 18px; background: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.07); position: sticky; top: 0; z-index: 20; font-size: 22px; font-weight: 700; color: #0b71f4; }
+
+/* HERO */
+.hero {
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  background-image: url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.hero-overlay {
+  background: rgba(0,0,0,0.55);
+  padding: 40px 15px;
+  border-radius: 20px;
+}
+.hero h1 { font-size: 30px; font-weight: 800; line-height: 1.3; }
+.subtitle { margin-top: 10px; font-size: 15px; opacity: 0.9; }
+
+.hero-btns { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
+.btn { padding: 14px; border-radius: 10px; color: white; text-decoration: none; font-weight: 700; display: block; }
+.btn-primary { background: #0b71f4; }
+.btn-secondary { background: #1e293b; }
+
+/* CATEGORY BARS */
+.category-bar {
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-top: 18px;
+  border-radius: 12px;
+}
+.blue { background: #0b71f4; }
+.green { background: #06b66b; }
+.orange { background: #f59e0b; }
+.purple { background: #7c3aed; }
+
+section { padding: 22px 18px; }
+
+/* MODERN BOX */
+.modern-box {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+  margin-top: 12px;
+}
+.modern-box p { margin: 10px 0; color: #475569; line-height: 1.5; }
+
+/* WHY CHOOSE */
+.why { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 12px; }
+.why-item {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.why-item strong { font-size: 16px; }
+
+@media (min-width: 768px) {
+  .why { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 40px; }
+}
+
+footer { padding: 20px; text-align: center; color: #64748b; font-size: 14px; margin-top: 20px; }
+
+  </style>
 </head>
-<body><header>
-    <h2>Nganya Style</h2>
-</header><section class="hero">
-    <h1>Smart, Fast & Stylish Matatu Rides</h1>
-    <p>Nganya Style is a modern ride booking platform that connects passengers with matatu drivers across the city in real‑time. Safe, fast and transparent.</p><div class="cta-buttons">
-    <a href="client.html"><button class="btn primary">Book a Ride</button></a>
-    <a href="driver.html"><button class="btn secondary">Become a Rider</button></a>
+<body><header>Nganya Style</header><div class="hero">
+  <div class="hero-overlay">
+    <h1>Ride Smart. Drop Safe. Safe Travel.</h1>
+    <p class="subtitle">Nganya Style is a modern ride booking platform that connects passengers with matatu drivers across the city in real‑time. Safe, fast and transparent.</p><div class="hero-btns">
+  <a href="client.html" class="btn btn-primary">Find a Nganya</a>
+  <a href="driver.html" class="btn btn-secondary">Register as Driver</a>
 </div>
 
-</section><section class="section">
-    <h2>Why Choose Nganya Style?</h2>
-    <div class="features">
-        <div class="card">
-            <h3>Real‑Time Tracking</h3>
-            <p>Passengers can see all active Nganyas on the road through live map updates.</p>
-        </div>
-        <div class="card">
-            <h3>Transparent Pricing</h3>
-            <p>No surprises — fares are shown upfront before you book.</p>
-        </div>
-        <div class="card">
-            <h3>Driver Dashboard</h3>
-            <p>Drivers get earnings, passenger count, trips and more in a live dashboard.</p>
-        </div>
-        <div class="card">
-            <h3>Admin Oversight</h3>
-            <p>All drivers must apply and be approved before joining the platform.</p>
-        </div>
+  </div>
+</div><section>
+  <h2 style="text-align:center; font-size:26px; margin-bottom:20px; font-weight:800;">How It Works</h2>  <!-- PASSENGER BOX -->  <div style="background:white; padding:20px; border-radius:18px; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:22px; border:2px solid #f3e6d5;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+      <div style="background:#4a90ff; padding:12px; border-radius:14px;"></div>
+      <h3 style="font-size:20px; font-weight:700;">For Passengers</h3>
+    </div><ul style="list-style:none; padding-left:0;">
+  <li style="display:flex; gap:12px; margin-bottom:16px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Live Map View</strong><br>
+      <span style="color:#555; font-size:14px;">See nearby nganyas in real‑time with seats & routes</span>
     </div>
+  </li>
+  <li style="display:flex; gap:12px; margin-bottom:16px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Instant Booking</strong><br>
+      <span style="color:#555; font-size:14px;">Request a seat and get quick confirmation</span>
+    </div>
+  </li>
+  <li style="display:flex; gap:12px; margin-bottom:16px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Smart Notifications</strong><br>
+      <span style="color:#555; font-size:14px;">Receive alerts when nearing your drop‑off</span>
+    </div>
+  </li>
+  <li style="display:flex; gap:12px; margin-bottom:8px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Rate & Review</strong><br>
+      <span style="color:#555; font-size:14px;">Help improve service quality with feedback</span>
+    </div>
+  </li>
+</ul>
+
+  </div>  <!-- DRIVER BOX -->  <div style="background:white; padding:20px; border-radius:18px; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:22px; border:2px solid #ffe7c2;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+      <div style="background:#ff9d28; padding:12px; border-radius:14px;"></div>
+      <h3 style="font-size:20px; font-weight:700;">For Drivers</h3>
+    </div><ul style="list-style:none; padding-left:0;">
+  <li style="display:flex; gap:12px; margin-bottom:16px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Easy Registration</strong><br>
+      <span style="color:#555; font-size:14px;">Fast setup: vehicle, route, and capacity</span>
+    </div>
+  </li>
+  <li style="display:flex; gap:12px; margin-bottom:16px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Accept / Reject Requests</strong><br>
+      <span style="color:#555; font-size:14px;">Full control with instant notifications</span>
+    </div>
+  </li>
+  <li style="display:flex; gap:12px; margin-bottom:16px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Auto Capacity Management</strong><br>
+      <span style="color:#555; font-size:14px;">System updates seats and hides full vehicles</span>
+    </div>
+  </li>
+  <li style="display:flex; gap:12px; margin-bottom:8px;">
+    <span style="color:#16a34a; font-size:20px;">✔</span>
+    <div>
+      <strong>Trip Extensions</strong><br>
+      <span style="color:#555; font-size:14px;">Update route and auto‑notify all passengers</span>
+    </div>
+  </li>
+</ul>
+
+  </div>
+</section><section id="why-choose" style="padding:22px 18px;">
+  <h2 style="text-align:center; font-size:26px; margin-bottom:20px; font-weight:800;">Why Choose Nganya Trip</h2>  <div style="display:flex; flex-direction:column; gap:18px;"><div style="background:#fff7ed; border-left:6px solid #f97316; padding:20px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center;">
+  <div style="font-size:40px; color:#f97316; margin-bottom:6px;">🚔</div>
+  <strong style="font-size:18px;">No Overloading</strong>
+  <p style="color:#475569; font-size:14px; margin-top:6px;">Strict capacity control for safer journeys</p>
+</div>
+
+<div style="background:#eff6ff; border-left:6px solid #3b82f6; padding:20px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center;">
+  <div style="font-size:40px; color:#3b82f6; margin-bottom:6px;">🕒</div>
+  <strong style="font-size:18px;">Real‑Time Tracking</strong>
+  <p style="color:#475569; font-size:14px; margin-top:6px;">Know exactly where your nganya is at all times</p>
+</div>
+
+<div style="background:#f0fff4; border-left:6px solid #22c55e; padding:20px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center;">
+  <div style="font-size:40px; color:#22c55e; margin-bottom:6px;">⭐</div>
+  <strong style="font-size:18px;">Rated Drivers</strong>
+  <p style="color:#475569; font-size:14px; margin-top:6px;">Ride with drivers who have verified good service</p>
+</div>
+
+<div style="background:#faf5ff; border-left:6px solid #a855f7; padding:20px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.06); text-align:center;">
+  <div style="font-size:40px; color:#a855f7; margin-bottom:6px;">🛑</div>
+  <strong style="font-size:18px;">Smart Drop‑offs</strong>
+  <p style="color:#475569; font-size:14px; margin-top:6px;">Get notified when approaching your final stop</p>
+</div>
+
+  </div>
+</section><section style="padding:30px 18px; text-align:center;">
+  <div style="background: linear-gradient(135deg, #ff9d28, #ff7a00); color:white; padding:32px 20px; border-radius:26px; box-shadow:0 10px 25px rgba(0,0,0,0.12);">
+    <h2 style="font-size:26px; font-weight:800; margin-bottom:12px;">Ready to Transform Your Commute?</h2>
+    <p style="font-size:15px; line-height:1.5; margin-bottom:20px; opacity:0.95;">Join thousands of smart travelers using Nganya Style every day</p>
+    <a href="client.html" style="background:white; color:#ff7a00; padding:14px 32px; border-radius:30px; font-weight:800; text-decoration:none; font-size:16px; display:inline-block;">Get Started Now</a>
+  </div>
 </section><footer>
-    <p>© 2025 Nganya Style</p>
-</footer></body>
-</html>
+  © <span id="year"></span> Nganya Style  All Rights Reserved
+</footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script></body>
+    </html>
