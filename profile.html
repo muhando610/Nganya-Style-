@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver Profile</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+    body{background:#f4f9ff;color:#0f172a;}header{
+  background:linear-gradient(135deg,#0b71f4,#0a5fd1);
+  padding:24px 18px;
+  color:white;
+  text-align:center;
+  border-bottom-left-radius:22px;
+  border-bottom-right-radius:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+header h1{font-size:24px;font-weight:800;}
+
+.container{max-width:480px;margin:30px auto;padding:0 18px;}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
+.card h3{font-size:20px;font-weight:700;margin-bottom:12px;}
+.item{margin-bottom:14px;}
+.item label{font-size:13px;color:#64748b;display:block;}
+.item span{font-size:16px;font-weight:600;color:#0f172a;}
+
+.btn{
+  background:#0b71f4;color:white;
+  padding:14px;text-align:center;
+  display:block;border-radius:12px;
+  text-decoration:none;font-weight:700;
+  margin-top:18px;
+}
+
+  </style>
+</head>
+<body><header>
+  <h1>Your Profile</h1>
+</header><div class="container">  <div class="card">
+    <h3>Driver Information</h3>
+    <div class="item">
+      <label>Full Name</label>
+      <span id="name">Loading...</span>
+    </div>
+    <div class="item">
+      <label>Email</label>
+      <span id="email">Loading...</span>
+    </div>
+    <div class="item">
+      <label>Phone Number</label>
+      <span id="phone">Loading...</span>
+    </div>
+  </div>  <div class="card">
+    <h3>Vehicle Details</h3>
+    <div class="item">
+      <label>Plate Number</label>
+      <span id="plate">Loading...</span>
+    </div>
+    <div class="item">
+      <label>Vehicle Capacity</label>
+      <span id="capacity">Loading...</span>
+    </div>
+    <div class="item">
+      <label>Route</label>
+      <span id="route">Loading...</span>
+    </div>
+  </div><a href="dashboard.html" class="btn">Back to Dashboard</a>
+
+</div><script>
+// REAL DATABASE FETCH (Replace endpoint with your backend API)
+async function loadProfile(){
+  try {
+    const response = await fetch('https://your-backend.com/api/driver/profile.php?id=DRIVER_ID');
+    const data = await response.json();
+
+    document.getElementById('name').textContent = data.name;
+    document.getElementById('email').textContent = data.email;
+    document.getElementById('phone').textContent = data.phone;
+    document.getElementById('plate').textContent = data.plate;
+    document.getElementById('capacity').textContent = data.capacity;
+    document.getElementById('route').textContent = data.route;
+  }
+  catch (err) {
+    console.error(err);
+    document.getElementById('name').textContent = 'Error fetching data';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadProfile);
+</script></body>
+</html>
