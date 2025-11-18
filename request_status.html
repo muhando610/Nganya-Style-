@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ride Request Status</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+    body{background:#f4f9ff;color:#0f172a;}header{
+  background:linear-gradient(135deg,#0b71f4,#0a5fd1);
+  padding:26px 20px;color:white;text-align:center;
+  border-bottom-left-radius:22px;border-bottom-right-radius:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+header h1{font-size:24px;font-weight:800;}
+
+.container{max-width:480px;margin:28px auto;padding:0 18px;}
+
+.card{
+  background:white;padding:22px;border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.08);
+  text-align:center;margin-bottom:16px;
+}
+
+.status-box{
+  padding:14px;border-radius:12px;font-size:16px;font-weight:700;
+  margin-bottom:20px;
+}
+.pending{background:#fff7cd;color:#b45309;}
+.accepted{background:#dcfce7;color:#166534;}
+.rejected{background:#fee2e2;color:#b91c1c;}
+
+.btn{background:#0b71f4;color:white;
+  padding:14px;text-align:center;display:block;
+  border-radius:12px;text-decoration:none;
+  font-weight:700;margin-top:12px;}
+
+  </style>
+</head>
+<body><header>
+  <h1>Ride Status</h1>
+</header><div class="container">  <div class="card">
+    <h3>Your Ride Request</h3><div id="statusBox" class="status-box pending">Checking status...</div>
+
+<div id="details" style="display:none;">
+  <p><strong>Driver:</strong> <span id="driverName"></span></p>
+  <p><strong>Vehicle:</strong> <span id="vehicle"></span></p>
+  <p><strong>Plate:</strong> <span id="plate"></span></p>
+  <p><strong>Route:</strong> <span id="route"></span></p>
+</div>
+
+<a id="trackBtn" class="btn" style="display:none;background:#15803d;" href="client_tracking.html">Track Driver</a>
+<a class="btn" style="background:#dc2626;" href="find_nganya.html">Cancel</a>
+
+  </div></div><script>
+// Fetch ride status
+async function checkStatus(){
+  try{
+    const res = await fetch('https://your-backend.com/api/client/rideStatus.php');
+    const data = await res.json();
+
+    const box = document.getElementById('statusBox');
+    const details = document.getElementById('details');
+    const trackBtn = document.getElementById('trackBtn');
+
+    if(data.status === 'pending'){
+      box.textContent = "Waiting for driver to accept...";
+      box.className = "status-box pending";
+    }
+    else if(data.status === 'accepted'){
+      box.textContent = "Driver Accepted!";
+      box.className = "status-box accepted";
+
+      details.style.display = 'block';
+      document.getElementById('driverName').textContent = data.driver;
+      document.getElementById('vehicle').textContent = data.vehicle;
+      document.getElementById('plate').textContent = data.plate;
+      document.getElementById('route').textContent = data.route;
+
+      trackBtn.style.display = 'block';
+    }
+    else if(data.status === 'rejected'){
+      box.textContent = "Driver Rejected Your Request";
+      box.className = "status-box rejected";
+    }
+
+  }catch(err){
+    document.getElementById('statusBox').textContent = "Error fetching status";
+  }
+}
+
+// Auto-refresh status every 3 seconds
+setInterval(checkStatus, 3000);
+checkStatus();
+</script></body>
+</html>
