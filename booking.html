@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passenger Bookings</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+    body{background:#f4f9ff;color:#0f172a;}header{
+  background:linear-gradient(135deg,#0b71f4,#0a5fd1);
+  padding:24px 18px;
+  color:white;
+  text-align:center;
+  border-bottom-left-radius:22px;
+  border-bottom-right-radius:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+header h1{font-size:24px;font-weight:800;}
+
+.container{max-width:480px;margin:30px auto;padding:0 18px;}
+
+.card{
+  background:white;
+  padding:18px;
+  border-radius:16px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.08);
+  margin-bottom:16px;
+}
+.card h3{font-size:18px;font-weight:700;margin-bottom:6px;}
+.detail{font-size:14px;color:#475569;margin-bottom:4px;}
+
+.status{
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:700;
+  border-radius:8px;
+  display:inline-block;
+  margin-top:8px;
+}
+.pending{background:#fff3cd;color:#b45309;}
+.approved{background:#dcfce7;color:#166534;}
+.declined{background:#fee2e2;color:#b91c1c;}
+
+.btn{
+  background:#0b71f4;color:white;
+  padding:14px;text-align:center;
+  display:block;border-radius:12px;
+  text-decoration:none;font-weight:700;
+  margin-top:20px;
+}
+
+  </style>
+</head>
+<body><header>
+  <h1>Passenger Bookings</h1>
+</header><div class="container" id="bookingList">
+  <h2 style="font-size:20px;font-weight:700;margin-bottom:12px;">Pickups</h2>
+  <div id="pickupList" style="margin-bottom:22px;"></div>  <h2 style="font-size:20px;font-weight:700;margin-bottom:12px;">Drop-offs</h2>
+  <div id="dropoffList" style="margin-bottom:22px;"></div>  <h2 style="font-size:20px;font-weight:700;margin-bottom:12px;">Extended Trips</h2>
+  <div id="extendedList" style="margin-bottom:22px;"></div>
+</div><a href="dashboard.html" class="btn">Back to Dashboard</a>
+
+<script>
+async function loadBookings(){
+  try{
+    const res = await fetch('https://your-backend.com/api/driver/getBookings.php?driver_id=DRIVER_ID');
+    const data = await res.json();
+
+    const pickupList = document.getElementById('pickupList');
+    const dropoffList = document.getElementById('dropoffList');
+    const extendedList = document.getElementById('extendedList');
+
+    pickupList.innerHTML = '';
+    dropoffList.innerHTML = '';
+    extendedList.innerHTML = '';
+
+    if(data.length === 0){
+      pickupList.innerHTML = '<p style="color:#64748b;">No bookings yet.</p>';
+      dropoffList.innerHTML = '<p style="color:#64748b;">No bookings yet.</p>';
+      extendedList.innerHTML = '<p style="color:#64748b;">No bookings yet.</p>';
+      return;
+    }
+
+    data.forEach(b => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${b.passenger_name}</h3>
+        <div class="detail">Pickup: ${b.pickup}</div>
+        <div class="detail">Drop-off: ${b.dropoff}</div>
+        <div class="detail">Fare: KSh ${b.fare}</div>
+        <span class="status ${b.status}">${b.status.toUpperCase()}</span>
+      `;
+
+      if(b.type === 'pickup') pickupList.appendChild(card);
+      else if(b.type === 'dropoff') dropoffList.appendChild(card);
+      else if(b.type === 'extended') extendedList.appendChild(card);
+    });
+
+  } catch(err){
+    document.getElementById('pickupList').innerHTML = '<p style="color:red;">Failed to load bookings.</p>';
+    document.getElementById('dropoffList').innerHTML = '';
+    document.getElementById('extendedList').innerHTML = '';
+  }
+}
+loadBookings();
+</script></body>
+</html>
