@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nganya Trip — Driver Login</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Poppins, sans-serif; }
+    body { background:#f4f9ff; color:#0f172a; }.container {
+  max-width:400px;
+  margin:50px auto;
+  background:white;
+  padding:28px;
+  border-radius:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+h2 { text-align:center; margin-bottom:20px; font-weight:800; color:#ff7a00; }
+
+label { font-size:14px; font-weight:600; display:block; margin-bottom:6px; }
+input {
+  width:100%;
+  padding:12px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  margin-bottom:18px;
+  font-size:15px;
+}
+
+.btn-login {
+  width:100%;
+  background:#ff7a00;
+  color:white;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.text-center { text-align:center; margin-top:14px; }
+a { color:#ff7a00; font-weight:600; text-decoration:none; }
+
+  </style>
+</head>
+<body><div class="container">
+  <h2>Driver Login</h2>  <form onsubmit="login(event)">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="Enter your email" required /><label>Password</label>
+<input type="password" id="password" placeholder="Enter your password" required />
+
+<p id="error-msg" style="color:#dc2626; font-size:14px; margin-bottom:10px; display:none;"></p>
+
+<button class="btn-login" type="submit">Login</button>
+
+  </form>  <p class="text-center" style="margin-top:10px;"><a href="forgot.html">Forgot Password?</a></p>  <p class="text-center">Don't have an account? <a href="register.html">Register</a></p>
+</div><script>
+  function login(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    const error = document.getElementById('error-msg');
+
+    error.style.display = 'none';
+
+    // Simulated database fetch (replace with real API call)
+    const users = [
+      { email: "driver@example.com", password: "123456" }
+    ];
+
+    const found = users.find(u => u.email === email);
+
+    if (!found) {
+      error.innerText = "Account not found. Please register.";
+      error.style.display = 'block';
+      return;
+    }
+
+    if (found.password !== pass) {
+      error.innerText = "Invalid email or password.";
+      error.style.display = 'block';
+      return;
+    }
+
+    // Login success
+    window.location.href = "dashboard.html";
+  }
+</script></body>
+</html>
